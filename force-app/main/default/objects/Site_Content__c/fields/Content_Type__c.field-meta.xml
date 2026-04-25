@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Content_Type__c</fullName>
+    <description>Type of content stored in this record</description>
+    <label>Content Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Text</fullName>
+                <default>true</default>
+                <label>Text</label>
+            </value>
+            <value>
+                <fullName>Rich Text</fullName>
+                <default>false</default>
+                <label>Rich Text</label>
+            </value>
+            <value>
+                <fullName>URL</fullName>
+                <default>false</default>
+                <label>URL</label>
+            </value>
+            <value>
+                <fullName>Image URL</fullName>
+                <default>false</default>
+                <label>Image URL</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

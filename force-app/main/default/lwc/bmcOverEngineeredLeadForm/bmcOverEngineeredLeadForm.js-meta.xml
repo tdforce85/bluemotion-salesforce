@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <masterLabel>Over-Engineered Lead Form</masterLabel>
+    <description>Over-engineered lead form with Normal (3-field) and Enterprise (11-step) modes. Self-aware comedy showcasing platform features.</description>
+</LightningComponentBundle>

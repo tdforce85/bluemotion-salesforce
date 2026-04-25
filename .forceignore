@@ -1,0 +1,148 @@
+# List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
+# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
+#
+
+package.xml
+
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json
+
+# LWC Jest
+**/__tests__/**
+
+node_modules/
+
+# ============================================================================
+# Bluemotion org hygiene
+# This Dev Edition org has the Coral Cloud sample template + Agentforce
+# Standard Bots preloaded. Without these ignores a `sf project retrieve start`
+# pulls down ~570 unrelated files. Everything below is "in the org but NOT
+# part of the Blue Motion Consulting project."
+# ============================================================================
+
+# --- Profiles ---
+# CLAUDE.md prescribes permission sets, not profile edits. Salesforce-managed
+# profiles cannot be deployed back anyway.
+**/profiles/**
+
+# --- Salesforce-managed permission sets and packages ---
+# sfdcInternalInt__* perm sets are managed by Salesforce internals and reject
+# deploy attempts.
+**/permissionsets/sfdcInternalInt__*
+**/permissionsets/sfdc_aiplanner_service_permset.*
+**/permissionsets/Agent_Builder_HOCs.*
+**/permissionsets/Password_Never_Expires.*
+**/permissionsets/Service_Presence_Status_Access.*
+
+# --- Coral Cloud sample template: permission sets ---
+**/permissionsets/Coral_Cloud_Agent_Permissions.*
+**/permissionsets/Coral_Cloud_Portal_User.*
+**/permissionsets/Coral_Clouds.*
+**/permissionsets/Experience_Profile_Manager.*
+**/permissionsets/Service_Agent.*
+**/permissionsets/Service_Agent_Permissions.*
+
+# --- Coral Cloud sample template: custom objects ---
+**/objects/Booking__c/**
+**/objects/Credit__c/**
+**/objects/Experience__c/**
+**/objects/Guest_Review__c/**
+**/objects/Session__c/**
+
+# --- Coral Cloud sample template: Apex classes ---
+**/classes/ChangePasswordController*
+**/classes/CheckWeather*
+**/classes/CommunitiesLandingController*
+**/classes/CommunitiesLoginController*
+**/classes/CommunitiesSelfRegConfirmController*
+**/classes/CommunitiesSelfRegController*
+**/classes/ContextService*
+**/classes/ExperienceBookingHelper*
+**/classes/ExperienceController*
+**/classes/ExperienceSessionController*
+**/classes/ForgotPasswordController*
+**/classes/LightningForgotPasswordController*
+**/classes/LightningLoginFormController*
+**/classes/LightningSelfRegisterController*
+**/classes/LLMService*
+**/classes/MicrobatchSelfRegController*
+**/classes/MyProfilePageController*
+**/classes/PersonalizedGuestExperiences*
+**/classes/SampleBookingBatch*
+**/classes/SampleDataGenerator*
+**/classes/SampleDataTest*
+**/classes/SiteLoginController*
+**/classes/SiteRegisterController*
+**/classes/SocialMediaController*
+**/classes/SocialMediaPostsController*
+**/classes/WeatherService*
+
+# --- Coral Cloud sample template: LWC ---
+**/lwc/codeBlock
+**/lwc/contactProfileCard
+**/lwc/coralCloudsHomepageNavigation
+**/lwc/coralCloudsHomepagePrompt
+**/lwc/coralCloudsHomepageShortcut
+**/lwc/coralCloudsHomepageShortcuts
+**/lwc/coralCloudsPageHeader
+**/lwc/errorPanel
+**/lwc/experienceOverview
+**/lwc/experienceSchedule
+**/lwc/experiencesPanel
+**/lwc/experiencesTile
+**/lwc/generateSocialMediaPosts
+**/lwc/generateText
+**/lwc/ldsUtils
+**/lwc/myModal
+**/lwc/paginator
+
+# --- Coral Cloud sample template: Aura components ---
+# CLAUDE.md is LWR-only — no Aura components belong in this project.
+**/aura/**
+
+# --- Coral Cloud sample template: flows ---
+**/flows/Add_Experiences_to_Prompt.*
+**/flows/Create_Experience_Session_Booking.*
+**/flows/ESA_Route_to_Queue.*
+**/flows/Get_Customer_Details.*
+**/flows/Get_Experience_Details.*
+**/flows/Get_Sessions.*
+**/flows/Issue_Bulk_Resort_Credits.*
+**/flows/Issue_Resort_Credit.*
+**/flows/PersonalizedSchedule.*
+**/flows/Route_to_ESA.*
+
+# --- Coral Cloud sample template: static resources ---
+**/staticresources/SNA_*
+**/staticresources/SiteSamples*
+**/staticresources/coralcloud*
+**/staticresources/highlight*
+**/staticresources/workshopDetails*
+
+# --- Coral Cloud sample template: misc ---
+**/workflows/Case.*
+**/duplicateRules/**
+**/matchingRules/**
+
+# --- Agentforce vibes: bots, planners, plugins, functions ---
+# Auto-generated and Coral Cloud agents — not part of BMC portfolio pieces.
+**/bots/Copilot_for_Salesforce/**
+**/bots/Coral_Cloud_Agent/**
+**/bots/Coral_Cloud_Experience_Agent/**
+**/genAiFunctions/Create_Experience_Session_Booking/**
+**/genAiFunctions/Get_Sessions/**
+**/genAiPlannerBundles/Coral_Cloud_Agent_v1/**
+**/genAiPlannerBundles/Coral_Cloud_Experience_Agent/**
+**/genAiPlannerBundles/EmployeeCopilotPlanner/**
+**/genAiPlugins/MigrationDefaultTopic.*
+
+# --- Networks (Experience Cloud sites) ---
+# Only the bluemotion site is part of this project. Pre-loaded sample sites
+# come down on retrieve otherwise.
+**/networks/Customer_Account_Portal.*
+**/networks/Customer_Service_Help_Center.*
+
+# --- Connected apps and sample named credentials ---
+**/connectedApps/**
+**/namedCredentials/Open_AI*
