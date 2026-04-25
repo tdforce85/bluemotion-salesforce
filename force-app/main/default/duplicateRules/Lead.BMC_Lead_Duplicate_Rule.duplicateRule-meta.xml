@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Note: References Standard_Lead_Matching_Rule_v1_0 which ships in all orgs by default.
+     If deploy fails, run: sf org list metadata --metadata-type MatchingRule
+     and update the matchingRule reference below to match your org's API name. -->
+<DuplicateRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <duplicateRuleMatchRules>
+        <matchRuleSObjectType>Lead</matchRuleSObjectType>
+        <matchingRule>Lead.Standard_Lead_Matching_Rule_v1_0</matchingRule>
+        <objectMapping>
+            <inputObject>Lead</inputObject>
+            <outputObject>Lead</outputObject>
+            <fieldMappings>
+                <inputField>Email</inputField>
+                <outputField>Email</outputField>
+            </fieldMappings>
+        </objectMapping>
+        <sortOrder>1</sortOrder>
+    </duplicateRuleMatchRules>
+    <isActive>true</isActive>
+    <label>BMC Lead Duplicate Rule</label>
+    <masterLabel>BMC Lead Duplicate Rule</masterLabel>
+    <operationsOnInsert>Allow</operationsOnInsert>
+    <operationsOnUpdate>Allow</operationsOnUpdate>
+</DuplicateRule>

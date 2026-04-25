@@ -743,12 +743,24 @@ export default class BmcOverEngineeredLeadForm extends LightningElement {
     }
 
     try {
-      await createLead({
+      const result = await createLead({
         leadData: this.formData
       });
 
       this.incrementPlatformFeatures("Lead DML operation (INSERT)");
       this.incrementPlatformFeatures("Database transaction commit");
+
+      if (result && result.eventPublished) {
+        this.incrementPlatformFeatures("Platform Event publication");
+        this.addToDebugLog("[EVENT BUS] LeadSubmission__e published — trigger + queueable inbound");
+      } else if (result && !result.eventPublished) {
+        this.addToDebugLog("[EVENT BUS] LeadSubmission__e publish failed — ErrorLogger has the receipts");
+        this.showToast(
+          "Platform Event Hiccup",
+          "Lead saved. Platform Event hiccupped. The Queueable is orphaned. Architecture points: 7/10.",
+          "warning"
+        );
+      }
 
       if (this.enterpriseMode) {
         this.showConfetti = true;
