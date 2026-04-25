@@ -5,7 +5,7 @@ import createLead from "@salesforce/apex/OverEngineeredLeadController.createLead
 // All alerts go through the in-component snarky-alert banner instead.
 
 export default class BmcOverEngineeredLeadForm extends LightningElement {
-  @track enterpriseMode = false;
+  @track enterpriseMode = true;
   @track currentStep = 1;
   @track platformFeaturesInvoked = 0;
   @track fieldsCaptured = 0;
@@ -321,6 +321,12 @@ export default class BmcOverEngineeredLeadForm extends LightningElement {
       this.showToast(
         "Enterprise Mode Activated",
         "Buckle up. You're about to experience what happens when architects have too much time.",
+        "info"
+      );
+    } else {
+      this.showToast(
+        "Normal Mode",
+        "Switching to the boring version. You'll be done in 30 seconds. (We won't judge. Much.)",
         "info"
       );
     }
