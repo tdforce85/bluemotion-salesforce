@@ -149,11 +149,13 @@ This is a public-facing Experience Cloud site. Security is non-negotiable:
 - **Actually works:** Despite the theater, creates a real Lead record
 
 ## Git Workflow
-- `main` = production-deployed metadata
-- `dev` = working branch
-- Feature branches off `dev`: `feature/over-engineered-form`, `feature/stack-configurator`
-- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `test:`
-- Deploy command: `sf project deploy start --target-org bluemotion`
+Two-tier model — solo dev, no QA/staging gate, so a `dev` middle layer adds ceremony without value.
+- `main` = production-deployed metadata. Always green, always matches the live site.
+- `feature/*` branches off `main` for non-trivial work (e.g., `feature/stack-configurator`, `feature/trigger-playground`). Merge back to `main` when it works in the org.
+- Tiny changes (typo fix, CSS tweak, copy edit) commit directly to `main`.
+- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `test:`.
+- Remote: https://github.com/tdforce85/bluemotion-salesforce (public).
+- Deploy command: `sf project deploy start --target-org bluemotion`.
 
 ## Deployment
 - Direct SFDX deployment via SF CLI (no Copado — overkill for solo dev)
