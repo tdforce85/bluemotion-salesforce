@@ -1,0 +1,77 @@
+<template>
+  <header class="header" role="banner">
+    <div class="header__inner">
+      <a class="logo" href={homeUrl} aria-label="Blue Motion Consulting home">
+        <span class="logo__text">Blue Motion Consulting</span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-controls="bmc-primary-nav"
+        aria-expanded={menuOpen}
+        aria-label="Toggle navigation menu"
+        onclick={handleToggleMenu}
+      >
+        <span class="menu-toggle__bar"></span>
+        <span class="menu-toggle__bar"></span>
+        <span class="menu-toggle__bar"></span>
+      </button>
+
+      <nav id="bmc-primary-nav" class={navClass} aria-label="Primary">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a class="nav__link" href={homeUrl} onclick={handleNavClick}
+              >Home</a
+            >
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href={portfolioUrl} onclick={handleNavClick}
+              >Portfolio</a
+            >
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href={contactUrl} onclick={handleNavClick}
+              >Contact</a
+            >
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href={underTheHoodUrl} onclick={handleNavClick}
+              >Under the Hood</a
+            >
+          </li>
+          <li class="nav__item">
+            <a
+              class="nav__link"
+              href={agentforceDemoUrl}
+              onclick={handleNavClick}
+              >Agentforce Demo</a
+            >
+          </li>
+          <li class="nav__item nav__item--external">
+            <a
+              class="nav__link nav__link--external"
+              href={externalLinkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onclick={handleNavClick}
+            >
+              <span>{externalLinkLabel}</span>
+              <svg
+                class="nav__external-icon"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M9 2h5v5h-1.5V4.56L7.06 10 6 8.94 11.44 3.5H9V2z" />
+                <path
+                  d="M12 9.5V13H3V4h3.5V2.5H3a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 3 14.5h9a1.5 1.5 0 0 0 1.5-1.5V9.5H12z"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</template>

@@ -1,0 +1,122 @@
+/* BMC Site Footer
+   Sizing/spacing/typography use SLDS 2 styling hooks (--slds-g-*).
+   Brand colors scoped as :host CSS vars. */
+
+:host {
+  --bmc-footer-bg: #1a1a2e;
+  --bmc-footer-fg: #e6e6f0;
+  --bmc-footer-fg-muted: #9b9bb0;
+  --bmc-footer-accent: #a5b4fc;
+  --bmc-footer-border: rgba(230, 230, 240, 0.08);
+
+  display: block;
+  background: var(--bmc-footer-bg);
+  color: var(--bmc-footer-fg);
+  font-family: var(
+    --slds-g-font-family-base,
+    "Salesforce Sans",
+    Arial,
+    sans-serif
+  );
+}
+
+.footer {
+  width: 100%;
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--slds-g-spacing-large, 1.5rem);
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--slds-g-spacing-x-large, 2rem)
+    var(--slds-g-spacing-medium, 1rem);
+}
+
+/* Brand block */
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.footer__company {
+  margin: 0;
+  font-size: var(--slds-g-font-size-4, 1rem);
+  font-weight: 600;
+  color: var(--bmc-footer-fg);
+}
+
+.footer__copyright {
+  margin: 0;
+  font-size: var(--slds-g-font-size-2, 0.8125rem);
+  color: var(--bmc-footer-fg-muted);
+}
+
+/* Links */
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--slds-g-spacing-medium, 1rem);
+}
+
+.footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--bmc-footer-fg);
+  text-decoration: none;
+  font-size: var(--slds-g-font-size-3, 0.9375rem);
+  font-weight: 500;
+  padding: 0.375rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--bmc-footer-accent);
+  outline: none;
+}
+
+.footer__link:focus-visible {
+  outline: 2px solid var(--bmc-footer-accent);
+  outline-offset: 2px;
+}
+
+.footer__icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* Tagline */
+.footer__tagline {
+  border-top: 1px solid var(--bmc-footer-border);
+  padding: var(--slds-g-spacing-medium, 1rem);
+  text-align: center;
+}
+
+.footer__tagline p {
+  margin: 0;
+  font-size: var(--slds-g-font-size-2, 0.8125rem);
+  color: var(--bmc-footer-fg-muted);
+  font-style: italic;
+}
+
+/* Mobile */
+@media (max-width: 48rem) {
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer__links {
+    width: 100%;
+  }
+}

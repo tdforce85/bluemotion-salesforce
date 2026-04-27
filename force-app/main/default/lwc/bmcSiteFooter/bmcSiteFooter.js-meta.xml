@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <masterLabel>BMC Site Footer</masterLabel>
+    <description
+  >Site footer with branding, copyright, external links, and tagline. LWR-only, mobile-responsive.</description>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+        name="githubUrl"
+        type="String"
+        label="GitHub URL"
+        default="https://github.com/tdforce85/bluemotion-salesforce"
+      />
+            <property
+        name="linkedInUrl"
+        type="String"
+        label="LinkedIn URL"
+        default="https://www.linkedin.com/in/tonydegregorio"
+      />
+            <property
+        name="personalSiteUrl"
+        type="String"
+        label="Personal Site URL"
+        default="https://tonydegregorio.com"
+      />
+            <property
+        name="tagline"
+        type="String"
+        label="Tagline"
+        default="Built on Salesforce Experience Cloud LWR. Yes, really."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

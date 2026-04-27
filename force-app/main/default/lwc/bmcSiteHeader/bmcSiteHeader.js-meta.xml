@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <masterLabel>BMC Site Header</masterLabel>
+    <description
+  >Sticky site header with text logo, primary navigation, and external link. LWR-only, mobile-responsive with hamburger menu.</description>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+        name="homeUrl"
+        type="String"
+        label="Home URL"
+        default="/"
+      />
+            <property
+        name="portfolioUrl"
+        type="String"
+        label="Portfolio URL"
+        default="/portfolio"
+      />
+            <property
+        name="contactUrl"
+        type="String"
+        label="Contact URL"
+        default="/contact"
+      />
+            <property
+        name="underTheHoodUrl"
+        type="String"
+        label="Under the Hood URL"
+        default="/under-the-hood"
+      />
+            <property
+        name="agentforceDemoUrl"
+        type="String"
+        label="Agentforce Demo URL"
+        default="/agentforce-demo"
+      />
+            <property
+        name="externalLinkUrl"
+        type="String"
+        label="External Link URL"
+        default="https://tonydegregorio.com"
+      />
+            <property
+        name="externalLinkLabel"
+        type="String"
+        label="External Link Label"
+        default="tonydegregorio.com"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
