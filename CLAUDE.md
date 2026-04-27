@@ -1,6 +1,7 @@
 # bluemotion-salesforce — Blue Motion Consulting Experience Cloud Site
 
 ## Overview
+
 Salesforce DX project for Blue Motion Consulting LLC (bluemotionconsulting.com). This is Tony DeGregorio's consulting portfolio, built as an Experience Cloud LWR site that doubles as a live demo of Salesforce architecture skills. The site itself IS the proof of competency.
 
 **Org:** Blue Motion Consulting LLC Developer Edition
@@ -9,6 +10,7 @@ Salesforce DX project for Blue Motion Consulting LLC (bluemotionconsulting.com).
 **Site URL:** bluemotionconsultingllc-dev-ed.develop.my.site.com
 
 ## Project Structure
+
 ```
 bluemotion-salesforce/
 ├── CLAUDE.md
@@ -32,13 +34,16 @@ bluemotion-salesforce/
 ## Architecture Principles
 
 ### Trigger Framework
-Use the GLBL_SObjectDomain pattern (modified fflib/Kevin O'Hara trigger handler):
-- One trigger per object, delegates to domain class
-- CMT kill switches for runtime bypass
-- Domain classes extend GLBL_SObjectDomain
-- Naming: `[ObjectName]TriggerHandler` for triggers, `[ObjectName]Domain` for domain classes
+
+Use the `fflib_SObjectDomain` pattern (Kevin O'Hara fork of fflib):
+
+- One trigger per object, delegates to domain class via `fflib_SObjectDomain.triggerHandler(MyDomain.class)`
+- CMT kill switches (`Trigger_Control__mdt`) for runtime bypass — fail-open if no record exists
+- Domain classes extend `fflib_SObjectDomain` and implement an inner `Constructor implements fflib_SObjectDomain.IConstructable`
+- Naming: `[ObjectName]Trigger` for triggers, `[ObjectName]Domain` for domain classes (e.g., `LeadSubmissionEventTrigger` → `LeadSubmissionEventDomain`)
 
 ### Apex Patterns
+
 - **Separation of concerns:** Selector → Domain → Service layers (fflib-inspired)
 - **Naming conventions:**
   - Selectors: `[ObjectName]Selector.cls`
@@ -52,6 +57,7 @@ Use the GLBL_SObjectDomain pattern (modified fflib/Kevin O'Hara trigger handler)
 - **Test coverage:** Minimum 85%. No fake coverage methods. Test behavior, not lines.
 
 ### LWC Conventions
+
 - All components built for **LWR Experience Cloud** (not Aura)
 - Component naming: camelCase folders, matching JS/HTML/CSS files
 - Prefix custom components with `bmc` (Blue Motion Consulting): `bmcHeroSection`, `bmcLeadForm`
@@ -61,19 +67,23 @@ Use the GLBL_SObjectDomain pattern (modified fflib/Kevin O'Hara trigger handler)
 - Expose properties via `@api` with JSDoc comments
 
 ### Experience Cloud (LWR)
+
 - LWR only — no Aura pages or components
 - Guest user profile must be locked down — minimal object/field access
 - All guest-accessible Apex must use `with sharing` and explicit CRUD/FLS checks
 - Content that changes frequently should be driven by `Site_Content__c` records, not hardcoded
 
 ### Flows
+
 - Screen flows for interactive user experiences (lead capture, configurator)
 - Naming: `BMC_[Feature]_[Type]` (e.g., `BMC_LeadCapture_ScreenFlow`)
 - Use custom labels for user-facing text where reuse is expected
 - Fault paths on every element that can fail
 
 ### Security — CRITICAL
+
 This is a public-facing Experience Cloud site. Security is non-negotiable:
+
 - Guest user has NO access beyond what is explicitly granted
 - All Apex controllers verify CRUD/FLS before DML
 - No SOQL injection — use bind variables
@@ -84,17 +94,20 @@ This is a public-facing Experience Cloud site. Security is non-negotiable:
 ## Data Model
 
 ### Custom Objects
+
 - `Service__c` — Consulting service offerings (drives Services page dynamically)
 - `Case_Study__c` — Portfolio pieces (problem, approach, outcome, tags)
 - `Stack_Result__c` — Configurator recommendation results
 - `Site_Content__c` — Lightweight CMS for dynamic page content
 
 ### Standard Objects Used
+
 - `Lead` — Contact form submissions
 
 ## Site Pages & Portfolio Pieces
 
 ### Site Pages
+
 1. **Home** — Custom LWC hero component, value prop, CTA
 2. **Services** — Data-driven from `Service__c` records via custom LWC
 3. **Portfolio / Case Studies** — From `Case_Study__c`, interactive architecture decision tool
@@ -102,13 +115,15 @@ This is a public-facing Experience Cloud site. Security is non-negotiable:
 5. **Agentforce Demo** — Embedded Agentforce agents
 
 ### Portfolio Piece 1: "Build Your Salesforce Stack" Configurator
+
 - **What:** Agentforce-driven conversational tool on Experience Cloud
 - **How it works:** Visitor chats with an Agentforce agent, describes their industry/size/pain points, gets a tailored Salesforce architecture recommendation
-- **Data:** Creates Lead + Stack_Result__c record
+- **Data:** Creates Lead + Stack_Result\_\_c record
 - **Personality:** Helpful but has humor. After delivering results: "This is the part where a normal website would put your email behind a gate. But we're not normal. Here's your recommendation. If you want the human who built me to dig deeper — he's pretty good too."
 - **Demonstrates:** Agentforce on Experience Cloud, topic/action design, conversational UX
 
 ### Portfolio Piece 2: "Will Salesforce Fix That?" Magic 8-Ball
+
 - **What:** Agentforce agent that answers Salesforce frustrations
 - **How it works:** Visitor types a Salesforce complaint/question, agent responds with a mix of real answers (with release notes) and sarcastic Magic 8-Ball responses
 - **Sample responses:**
@@ -119,13 +134,15 @@ This is a public-facing Experience Cloud site. Security is non-negotiable:
 - **Demonstrates:** Agentforce personality design, grounding in real Salesforce knowledge
 
 ### Portfolio Piece 3: Trigger Framework Playground
-- **What:** Interactive LWC visualization of the GLBL_SObjectDomain trigger framework
+
+- **What:** Interactive LWC visualization of the `fflib_SObjectDomain` trigger framework
 - **How it works:** Visitor picks a scenario (Before Insert, After Update, etc.), sees the execution path visualized — handler routing, domain class invocation, CMT kill switch evaluation
 - **Key feature:** Toggle a kill switch on/off and watch the execution path change in real time
 - **Implementation:** Pure client-side LWC, framework structure defined in JSON, no guest user Apex needed
 - **Demonstrates:** Enterprise trigger framework design, CMT governance patterns
 
 ### Portfolio Piece 4: The Over-Engineered Lead Form
+
 - **What:** A contact form that's intentionally, comically over-architected — and self-aware about it
 - **Toggle:** "Normal Mode" (3-field form, instant submit) vs "Enterprise Architecture Mode" (the full experience)
 - **Steps in Enterprise Mode:**
@@ -145,11 +162,13 @@ This is a public-facing Experience Cloud site. Security is non-negotiable:
   - Submit button evolution — starts: "Submit (pending architectural review)" → ends: giant green "DEPLOY TO PRODUCTION"
   - Confetti explosion on submit
 
-- **Platform features demonstrated:** Custom LWC, Screen Flow, Validation Rules, Duplicate Rules, Before-Insert Trigger (GLBL_SObjectDomain), Platform Events, Queueable Apex, API Callouts, Approval Process (mock), Custom Metadata Types, Experience Cloud Guest User context
+- **Platform features demonstrated:** Custom LWC, Screen Flow, Validation Rules, Duplicate Rules, Before-Insert Trigger (`fflib_SObjectDomain`), Platform Events, Queueable Apex, API Callouts, Approval Process (mock), Custom Metadata Types, Experience Cloud Guest User context
 - **Actually works:** Despite the theater, creates a real Lead record
 
 ## Git Workflow
+
 Two-tier model — solo dev, no QA/staging gate, so a `dev` middle layer adds ceremony without value.
+
 - `main` = production-deployed metadata. Always green, always matches the live site.
 - `feature/*` branches off `main` for non-trivial work (e.g., `feature/stack-configurator`, `feature/trigger-playground`). Merge back to `main` when it works in the org.
 - Tiny changes (typo fix, CSS tweak, copy edit) commit directly to `main`.
@@ -158,12 +177,14 @@ Two-tier model — solo dev, no QA/staging gate, so a `dev` middle layer adds ce
 - Deploy command: `sf project deploy start --target-org bluemotion`.
 
 ## Deployment
+
 - Direct SFDX deployment via SF CLI (no Copado — overkill for solo dev)
 - `sf project deploy start` for push to org
 - `sf project retrieve start` to pull changes made in Setup/Builder
 - Always retrieve after making changes in Experience Builder UI
 
 ## Brand & Tone
+
 - Professional but personality-forward — not corporate
 - Humor is a feature, not an accident
 - Self-aware about Salesforce platform quirks
@@ -171,6 +192,7 @@ Two-tier model — solo dev, no QA/staging gate, so a `dev` middle layer adds ce
 - The code should make a tech lead nod in approval
 
 ## Important Reminders
+
 - This is a **Developer Edition** org — governor limits are real but data limits are tight (5MB)
 - Custom domains are NOT supported on Dev Edition — don't attempt to configure one
 - All components must work in the **guest user context** — no authenticated-only patterns
