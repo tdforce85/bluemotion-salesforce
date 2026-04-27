@@ -1,537 +1,787 @@
 <template>
-    <div class="over-engineered-container">
-        <!-- Mode Toggle -->
-        <div class="mode-toggle-container">
-            <lightning-button
-                label={modeToggleLabel}
-                onclick={handleModeToggle}
-                variant="neutral"
-                class="mode-toggle-button">
-            </lightning-button>
-        </div>
-
-        <!-- Platform Features Counter -->
-        <template if:true={enterpriseMode}>
-            <div class="stats-badge">
-                <lightning-icon icon-name="utility:metrics" size="x-small"></lightning-icon>
-                <span class="stats-text">{stats}</span>
-            </div>
-        </template>
-
-        <!-- Main Card -->
-        <lightning-card title="Over-Engineered Lead Capture System™" icon-name="custom:custom63">
-            <div slot="actions">
-                <lightning-badge label={currentStepConfig.number} class="step-badge"></lightning-badge>
-            </div>
-
-            <!-- Progress Bar -->
-            <template if:true={enterpriseMode}>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style={progressStyle}></div>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Step Header -->
-            <div class="step-header">
-                <h2 class="step-title">{currentStepConfig.title}</h2>
-                <p class="step-subtitle">{currentStepConfig.subtitle}</p>
-                <div class="commentary-box">
-                    <lightning-icon icon-name="utility:info" size="xx-small"></lightning-icon>
-                    <span class="commentary-text">{currentStepConfig.commentary}</span>
-                </div>
-            </div>
-
-            <!-- STEP 1: The Basics -->
-            <template if:true={isStep1}>
-                <div class="step-content">
-                    <div class="field-group">
-                        <lightning-input
-                            label="First Name"
-                            placeholder="Your given name"
-                            value={formData.firstName}
-                            data-field="firstName"
-                            onchange={handleFieldChange}
-                            onblur={handleBlur}
-                            class="fancy-input">
-                        </lightning-input>
-                        <template if:true={enterpriseMode}>
-                            <div class="field-meta">Platform Feature: lightning-input component instantiation</div>
-                        </template>
-                    </div>
-
-                    <div class="field-group">
-                        <lightning-input
-                            label="Last Name"
-                            placeholder="Your family name (required by our governance committee)"
-                            value={formData.lastName}
-                            data-field="lastName"
-                            onchange={handleFieldChange}
-                            onblur={handleBlur}
-                            required
-                            class="fancy-input">
-                        </lightning-input>
-                        <template if:true={enterpriseMode}>
-                            <div class="field-meta">Platform Feature: Required field validation + SLDS styling</div>
-                        </template>
-                    </div>
-
-                    <div class="field-group">
-                        <lightning-input
-                            label="Email Address"
-                            type="email"
-                            placeholder="your.email@company.com"
-                            value={formData.email}
-                            data-field="email"
-                            onchange={handleFieldChange}
-                            onblur={handleBlur}
-                            required
-                            class="fancy-input">
-                        </lightning-input>
-                        <template if:true={enterpriseMode}>
-                            <div class="field-meta">Platform Feature: Email validation + Duplicate detection on blur</div>
-                        </template>
-                        
-                        <template if:true={isCheckingDuplicates}>
-                            <div class="duplicate-check">
-                                <lightning-spinner alternative-text="Checking for duplicates..." size="small"></lightning-spinner>
-                                <span class="checking-text">Querying Salesforce org...</span>
-                            </div>
-                        </template>
-
-                    </div>
-
-                    <template if:false={enterpriseMode}>
-                        <div class="field-group">
-                            <lightning-input
-                                label="Company"
-                                placeholder="Your company name"
-                                value={formData.company}
-                                data-field="company"
-                                onchange={handleFieldChange}
-                                required>
-                            </lightning-input>
-                        </div>
-                    </template>
-                </div>
-            </template>
-
-            <!-- STEP 2: Address Verification -->
-            <template if:true={isStep2}>
-                <div class="step-content">
-                    <div class="field-group">
-                        <lightning-input
-                            label="Street Address"
-                            placeholder="123 Main St"
-                            value={formData.street}
-                            data-field="street"
-                            onchange={handleFieldChange}>
-                        </lightning-input>
-                    </div>
-                    <div class="field-row">
-                        <lightning-input
-                            label="City"
-                            value={formData.city}
-                            data-field="city"
-                            onchange={handleFieldChange}
-                            class="field-half">
-                        </lightning-input>
-                        <lightning-input
-                            label="State"
-                            value={formData.state}
-                            data-field="state"
-                            onchange={handleFieldChange}
-                            class="field-quarter">
-                        </lightning-input>
-                        <lightning-input
-                            label="ZIP"
-                            value={formData.zip}
-                            data-field="zip"
-                            onchange={handleFieldChange}
-                            class="field-quarter">
-                        </lightning-input>
-                    </div>
-                    
-                    <template if:true={hasMapAddress}>
-                        <div class="map-container">
-                            <lightning-map
-                                map-markers={mapMarkers}
-                                zoom-level="13"
-                                list-view="hidden">
-                            </lightning-map>
-                            <p class="map-note">(API callout to geocoding service: +1 platform feature)</p>
-                        </div>
-                    </template>
-                    <template if:false={hasMapAddress}>
-                        <div class="map-placeholder">
-                            <lightning-icon icon-name="utility:world" size="large"></lightning-icon>
-                            <p>Enter an address — drone target acquires on geocode</p>
-                            <p class="map-note">(API callout: +1 platform feature)</p>
-                        </div>
-                    </template>
-
-                    <div class="drone-section">
-                        <lightning-button
-                            label="🚁 Click Here to Dispatch the Agentforce Drone Army"
-                            variant="destructive"
-                            onclick={handleDroneDeployment}
-                            class="drone-button">
-                        </lightning-button>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 3: Company Intelligence -->
-            <template if:true={isStep3}>
-                <div class="step-content">
-                    <div class="field-group">
-                        <lightning-input
-                            label="Company Name"
-                            placeholder="Acme Corporation"
-                            value={formData.company}
-                            data-field="company"
-                            onchange={handleFieldChange}
-                            required>
-                        </lightning-input>
-                        <div class="field-meta">Enriching with Data Cloud... just kidding, it's free today</div>
-                    </div>
-
-                    <div class="enrichment-box">
-                        <h3>🔍 Company Enrichment Results</h3>
-                        <p><strong>Industry:</strong> Technology (probably)</p>
-                        <p><strong>Employee Count:</strong> 10-50 (our AI guessed)</p>
-                        <p><strong>Annual Revenue:</strong> $$$$ (we have no idea)</p>
-                        <p class="enrichment-note">Platform Features Invoked for This Fake Data: 7</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 4: Risk Assessment -->
-            <template if:true={isStep4}>
-                <div class="step-content">
-                    <div class="approval-matrix">
-                        <h3>47-Step Approval Process</h3>
-                        <div class="approval-steps">
-                            <div class="approval-step approved">✓ Legal Review</div>
-                            <div class="approval-step approved">✓ Compliance Check</div>
-                            <div class="approval-step approved">✓ Security Assessment</div>
-                            <div class="approval-step approved">✓ Architectural Review</div>
-                            <div class="approval-step approved">✓ ...43 more steps...</div>
-                            <div class="approval-step approved">✓ Final Approval</div>
-                        </div>
-                        <p class="approval-note">Status: <strong>APPROVED</strong> (it was always going to be approved)</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 5: Enterprise Event Bus -->
-            <template if:true={isStep5}>
-                <div class="step-content">
-                    <div class="event-bus-visual">
-                        <h3>🚌 Enterprise Event Bus Journey</h3>
-                        <div class="event-flow">
-                            <div class="event-step">
-                                <lightning-icon icon-name="utility:announcement" size="small"></lightning-icon>
-                                <span>Platform Event Published</span>
-                            </div>
-                            <div class="event-arrow">→</div>
-                            <div class="event-step">
-                                <lightning-icon icon-name="utility:apex" size="small"></lightning-icon>
-                                <span>Trigger Consumed Event</span>
-                            </div>
-                            <div class="event-arrow">→</div>
-                            <div class="event-step">
-                                <lightning-icon icon-name="utility:queue" size="small"></lightning-icon>
-                                <span>Queueable Invoked</span>
-                            </div>
-                        </div>
-                        <p class="event-note">Your name and email just traveled through 3 architectural layers. Fields saved: 2.</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 6: Additional Demographics -->
-            <template if:true={isStep6}>
-                <div class="step-content">
-                    <div class="field-group">
-                        <lightning-input
-                            label="Phone Number"
-                            type="tel"
-                            placeholder="+1 (555) 123-4567"
-                            value={formData.phone}
-                            data-field="phone"
-                            onchange={handleFieldChange}>
-                        </lightning-input>
-                        <div class="field-meta">Platform Feature: Telephone input type</div>
-                    </div>
-                    <div class="info-box">
-                        <p>💡 We're collecting this for the marketing automation we haven't built yet.</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 7: Preferences -->
-            <template if:true={isStep7}>
-                <div class="step-content">
-                    <div class="preferences-box">
-                        <h3>Communication Preferences</h3>
-                        <lightning-input type="checkbox" label="Email me weekly updates" checked></lightning-input>
-                        <lightning-input type="checkbox" label="Send me product announcements" checked></lightning-input>
-                        <lightning-input type="checkbox" label="Include me in nurture campaigns" checked></lightning-input>
-                        <p class="pref-note">Don't worry, we'll ignore these settings later.</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 8: Terms & Conditions -->
-            <template if:true={isStep8}>
-                <div class="step-content">
-                    <div class="terms-preview">
-                        <h3>Terms & Conditions</h3>
-                        <div class="terms-scroll">
-                            <p><strong>Section 1:</strong> You agree this form is over-engineered.</p>
-                            <p><strong>Section 2:</strong> See Section 1.</p>
-                            <p><strong>Section 3-47:</strong> More legal text you won't read...</p>
-                        </div>
-                        <p class="terms-note">📄 47 pages of enterprise-grade legal text (truncated for your sanity)</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 9: Final Validation -->
-            <template if:true={isStep9}>
-                <div class="step-content">
-                    <div class="validation-box">
-                        <h3>Re-Validating Everything</h3>
-                        <div class="validation-checks">
-                            <div class="check-item">✓ Validation Rules (redundant)</div>
-                            <div class="check-item">✓ Duplicate Rules (already did this)</div>
-                            <div class="check-item">✓ Workflow Rules (deprecated but still here)</div>
-                            <div class="check-item">✓ Process Builder (should be a Flow)</div>
-                            <div class="check-item">✓ Flow (should be a trigger)</div>
-                            <div class="check-item">✓ Trigger (finally, the right tool)</div>
-                        </div>
-                        <p class="validation-note">All validations passed. Again.</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 10: Architectural Review -->
-            <template if:true={isStep10}>
-                <div class="step-content">
-                    <div class="arch-review">
-                        <h3>Architectural Committee Review</h3>
-                        <div class="review-status">
-                            <template if:true={archReviewSpinning}>
-                                <lightning-spinner size="medium" alternative-text="Awaiting approval"></lightning-spinner>
-                            </template>
-                            <p class="review-text">Status: Pending...</p>
-                            <template if:true={archReviewStillPending}>
-                                <p class="review-text">Status: Still Pending...</p>
-                            </template>
-                            <template if:true={archReviewApproved}>
-                                <p class="review-text">Status: <strong class="approved">APPROVED!</strong></p>
-                            </template>
-                        </div>
-                        <p class="review-note">(It was instant, we just made you wait)</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- STEP 11: The Reveal -->
-            <template if:true={isStep11}>
-                <div class="step-content">
-                    <div class="debug-log-container">
-                        <h3>🐛 Mock Debug Log</h3>
-                        <div class="debug-log">
-                            <template for:each={debugLog} for:item="log">
-                                <div key={log} class="log-entry">{log}</div>
-                            </template>
-                        </div>
-                        <div class="total-features">
-                            <strong>Total Platform Features Invoked: {platformFeaturesInvoked}</strong>
-                        </div>
-                    </div>
-
-                    <div class="final-message">
-                        <h3>🎭 The Reveal</h3>
-                        <p>If this made you laugh and slightly concerned about my priorities, imagine what I could build for your org.</p>
-                        <p>All of this... to capture {fieldsCaptured} fields.</p>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Navigation Buttons -->
-            <div slot="footer" class="button-container">
-                <lightning-button
-                    label="Previous"
-                    icon-name="utility:back"
-                    onclick={handlePrevious}
-                    disabled={isFirstStep}
-                    class="nav-button">
-                </lightning-button>
-                
-                <lightning-button
-                    variant="brand"
-                    label={nextButtonLabel}
-                    icon-name="utility:forward"
-                    icon-position="right"
-                    onclick={handleNext}
-                    disabled={isNextDisabled}
-                    class="nav-button next-button">
-                </lightning-button>
-            </div>
-
-            <!-- Loading Overlay -->
-            <template if:true={isSubmitting}>
-                <div class="loading-overlay">
-                    <div class="loading-content">
-                        <lightning-spinner alternative-text="Processing..." size="large"></lightning-spinner>
-                        <h3>Processing Lead Creation...</h3>
-                        <p class="loading-message">{loadingMessage}</p>
-                    </div>
-                </div>
-            </template>
-        </lightning-card>
-
-        <!-- Terms Modal (custom — SLDS modal classes don't penetrate shadow DOM in LWR) -->
-        <template if:true={showTermsModal}>
-            <div class="bmc-modal-backdrop" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99998;display:flex;align-items:center;justify-content:center;padding:1rem;">
-                <div class="bmc-modal" style="background:#fff;border-radius:8px;max-width:540px;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,0.25);">
-                    <header class="bmc-modal__header">
-                        <h2 class="bmc-modal__title">Terms &amp; Conditions (47 Pages)</h2>
-                    </header>
-                    <div class="bmc-modal__content">
-                        <p><strong>Section 1:</strong> You agree this form is over-engineered.</p>
-                        <p><strong>Section 2:</strong> See Section 1.</p>
-                        <p><strong>Sections 3-47:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                        <p class="terms-fine-print">(No one reads these anyway)</p>
-                    </div>
-                    <footer class="bmc-modal__footer">
-                        <lightning-button
-                            label="I Accept (pending architectural review)"
-                            variant="brand"
-                            onclick={closeTermsModal}>
-                        </lightning-button>
-                    </footer>
-                </div>
-            </div>
-        </template>
-
-        <!-- Drone Deployment Modal -->
-        <template if:true={showDroneModal}>
-            <div class="bmc-modal-backdrop" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99998;display:flex;align-items:center;justify-content:center;padding:1rem;">
-                <div class="bmc-modal" style="background:#fff;border-radius:8px;max-width:540px;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,0.25);">
-                    <header class="bmc-modal__header">
-                        <h2 class="bmc-modal__title">🚁 Agentforce Drone Army Deployment</h2>
-                        <lightning-button-icon
-                            icon-name="utility:close"
-                            variant="bare"
-                            onclick={closeDroneModal}
-                            alternative-text="Close">
-                        </lightning-button-icon>
-                    </header>
-                    <div class="bmc-modal__content">
-                        <template if:true={isDroneDeploying}>
-                            <div class="drone-stage">
-                                <p class="deploy-text">Deploying AgentforceDroneArmy_v47.cls to Production...</p>
-                                <lightning-spinner size="medium" alternative-text="Deploying"></lightning-spinner>
-                            </div>
-                        </template>
-
-                        <template if:true={isDroneFailed}>
-                            <div class="drone-stage failure">
-                                <lightning-icon icon-name="utility:error" variant="error" size="large"></lightning-icon>
-                                <p class="error-text"><strong>DEPLOYMENT FAILED</strong></p>
-                                <p>Code coverage: 74%. You need 75%.</p>
-                                <template if:true={isDroneAssertion}>
-                                    <p class="error-detail">1 test failed: testDroneSwarmInitialization</p>
-                                    <p class="error-detail">System.AssertException: Expected: world domination, Actual: null</p>
-                                </template>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-        </template>
-
-        <!-- Duplicate Check Modal -->
-        <template if:true={showDuplicateModal}>
-            <div class="bmc-modal-backdrop" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99998;display:flex;align-items:center;justify-content:center;padding:1rem;">
-                <div class="bmc-modal" style="background:#fff;border-radius:8px;max-width:540px;width:100%;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,0.25);">
-                    <header class="bmc-modal__header">
-                        <h2 class="bmc-modal__title">🔍 Duplicate Check Results</h2>
-                        <lightning-button-icon
-                            icon-name="utility:close"
-                            variant="bare"
-                            onclick={closeDuplicateModal}
-                            alternative-text="Close">
-                        </lightning-button-icon>
-                    </header>
-                    <div class="bmc-modal__content">
-                        <div class="duplicate-result-box">
-                            <p class="result-text">{duplicateCheckResult}</p>
-                            <template if:true={hasDuplicates}>
-                                <p class="duplicate-list-heading"><strong>Potential matches:</strong></p>
-                                <ul class="duplicate-list">
-                                    <template for:each={duplicateLeads} for:item="dup">
-                                        <li key={dup.Id}>{dup.FirstName} {dup.LastName} ({dup.Email})</li>
-                                    </template>
-                                </ul>
-                                <p class="duplicate-note">You may proceed anyway (we're not the data police).</p>
-                            </template>
-                            <p class="result-note">Platform Feature Invoked: SOQL Query + Imperative Apex Call</p>
-                        </div>
-                    </div>
-                    <footer class="bmc-modal__footer">
-                        <lightning-button
-                            label="Close"
-                            variant="brand"
-                            onclick={closeDuplicateModal}>
-                        </lightning-button>
-                    </footer>
-                </div>
-            </div>
-        </template>
-
-        <!-- Snarky Alert (custom inline banner — ShowToastEvent doesn't render on LWR sites) -->
-        <template if:true={snarkyAlert}>
-            <div class={snarkyAlertClass} role="alert" style="position:fixed;top:80px;right:20px;z-index:99999;max-width:360px;padding:1rem 1.25rem;color:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.25);display:flex;align-items:flex-start;gap:0.75rem;">
-                <div class="snarky-alert__body" style="flex:1;">
-                    <div class="snarky-alert__title" style="font-weight:700;font-size:1rem;margin-bottom:0.25rem;">{snarkyAlert.title}</div>
-                    <div class="snarky-alert__message" style="font-size:0.875rem;line-height:1.4;">{snarkyAlert.message}</div>
-                </div>
-                <lightning-button-icon
-                    icon-name="utility:close"
-                    variant="bare-inverse"
-                    size="small"
-                    alternative-text="Dismiss"
-                    onclick={closeSnarky}
-                    class="snarky-alert__close">
-                </lightning-button-icon>
-            </div>
-        </template>
-
-        <!-- Confetti Overlay -->
-        <template if:true={showConfetti}>
-            <div class="confetti-container">
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-                <div class="confetti"></div>
-            </div>
-        </template>
-
-        <!-- Footer -->
-        <div class="footer-note">
-            <p>💡 <em>This form demonstrates what happens when developers have too much time and too many platform features.</em></p>
-        </div>
+  <div class="over-engineered-container">
+    <!-- Mode Toggle -->
+    <div class="mode-toggle-container">
+      <lightning-button
+        label={modeToggleLabel}
+        onclick={handleModeToggle}
+        variant="neutral"
+        class="mode-toggle-button"
+      >
+      </lightning-button>
     </div>
+
+    <!-- Main Card -->
+    <lightning-card
+      title="Over-Engineered Lead Capture System™"
+      icon-name="custom:custom63"
+    >
+      <div slot="actions" class="card-actions">
+        <template if:true={enterpriseMode}>
+          <div class="stats-badge">
+            <lightning-icon
+              icon-name="utility:metrics"
+              size="x-small"
+            ></lightning-icon>
+            <span class="stats-text">{stats}</span>
+          </div>
+        </template>
+        <lightning-badge
+          label={currentStepConfig.number}
+          class="step-badge"
+        ></lightning-badge>
+      </div>
+
+      <!-- Progress Bar -->
+      <template if:true={enterpriseMode}>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" style={progressStyle}></div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Step Header -->
+      <div class="step-header">
+        <h2 class="step-title">{currentStepConfig.title}</h2>
+        <p class="step-subtitle">{currentStepConfig.subtitle}</p>
+        <div class="commentary-box">
+          <lightning-icon
+            icon-name="utility:info"
+            size="xx-small"
+          ></lightning-icon>
+          <span class="commentary-text">{currentStepConfig.commentary}</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: The Basics -->
+      <template if:true={isStep1}>
+        <div class="step-content">
+          <div class="field-group">
+            <lightning-input
+              label="First Name"
+              placeholder="Your given name"
+              value={formData.firstName}
+              data-field="firstName"
+              onchange={handleFieldChange}
+              onblur={handleBlur}
+              class="fancy-input"
+            >
+            </lightning-input>
+            <template if:true={enterpriseMode}>
+              <div class="field-meta">
+                Platform Feature: lightning-input component instantiation
+              </div>
+            </template>
+          </div>
+
+          <div class="field-group">
+            <lightning-input
+              label="Last Name"
+              placeholder="Your family name (required by our governance committee)"
+              value={formData.lastName}
+              data-field="lastName"
+              onchange={handleFieldChange}
+              onblur={handleBlur}
+              required
+              class="fancy-input"
+            >
+            </lightning-input>
+            <template if:true={enterpriseMode}>
+              <div class="field-meta">
+                Platform Feature: Required field validation + SLDS styling
+              </div>
+            </template>
+          </div>
+
+          <div class="field-group">
+            <lightning-input
+              label="Email Address"
+              type="email"
+              placeholder="your.email@company.com"
+              value={formData.email}
+              data-field="email"
+              onchange={handleFieldChange}
+              onblur={handleBlur}
+              required
+              class="fancy-input"
+            >
+            </lightning-input>
+            <template if:true={enterpriseMode}>
+              <div class="field-meta">
+                Platform Feature: Email validation + Duplicate detection on blur
+              </div>
+            </template>
+
+            <template if:true={isCheckingDuplicates}>
+              <div class="duplicate-check">
+                <lightning-spinner
+                  alternative-text="Checking for duplicates..."
+                  size="small"
+                ></lightning-spinner>
+                <span class="checking-text">Querying Salesforce org...</span>
+              </div>
+            </template>
+          </div>
+
+          <template if:false={enterpriseMode}>
+            <div class="field-group">
+              <lightning-input
+                label="Company"
+                placeholder="Your company name"
+                value={formData.company}
+                data-field="company"
+                onchange={handleFieldChange}
+                required
+              >
+              </lightning-input>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- STEP 2: Address Verification -->
+      <template if:true={isStep2}>
+        <div class="step-content">
+          <div class="field-group">
+            <lightning-input
+              label="Street Address"
+              placeholder="123 Main St"
+              value={formData.street}
+              data-field="street"
+              onchange={handleFieldChange}
+            >
+            </lightning-input>
+          </div>
+          <div class="field-row">
+            <lightning-input
+              label="City"
+              value={formData.city}
+              data-field="city"
+              onchange={handleFieldChange}
+              class="field-half"
+            >
+            </lightning-input>
+            <lightning-input
+              label="State"
+              value={formData.state}
+              data-field="state"
+              onchange={handleFieldChange}
+              class="field-quarter"
+            >
+            </lightning-input>
+            <lightning-input
+              label="ZIP"
+              value={formData.zip}
+              data-field="zip"
+              onchange={handleFieldChange}
+              class="field-quarter"
+            >
+            </lightning-input>
+          </div>
+
+          <template if:true={hasMapAddress}>
+            <div class="map-container">
+              <lightning-map
+                map-markers={mapMarkers}
+                zoom-level="13"
+                list-view="hidden"
+              >
+              </lightning-map>
+              <p class="map-note">
+                (API callout to geocoding service: +1 platform feature)
+              </p>
+            </div>
+          </template>
+          <template if:false={hasMapAddress}>
+            <div class="map-placeholder">
+              <lightning-icon
+                icon-name="utility:world"
+                size="large"
+              ></lightning-icon>
+              <p>Enter an address — drone target acquires on geocode</p>
+              <p class="map-note">(API callout: +1 platform feature)</p>
+            </div>
+          </template>
+
+          <div class="drone-section">
+            <lightning-button
+              label="🚁 Click Here to Dispatch the Agentforce Drone Army"
+              variant="destructive"
+              onclick={handleDroneDeployment}
+              class="drone-button"
+            >
+            </lightning-button>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 3: Company Intelligence -->
+      <template if:true={isStep3}>
+        <div class="step-content">
+          <div class="field-group">
+            <lightning-input
+              label="Company Name"
+              placeholder="Acme Corporation"
+              value={formData.company}
+              data-field="company"
+              onchange={handleFieldChange}
+              required
+            >
+            </lightning-input>
+            <div class="field-meta">
+              Enriching with Data Cloud... just kidding, it's free today
+            </div>
+          </div>
+
+          <div class="enrichment-box">
+            <h3>🔍 Company Enrichment Results</h3>
+            <p><strong>Industry:</strong> Technology (probably)</p>
+            <p><strong>Employee Count:</strong> 10-50 (our AI guessed)</p>
+            <p><strong>Annual Revenue:</strong> $$$$ (we have no idea)</p>
+            <p class="enrichment-note">
+              Platform Features Invoked for This Fake Data: 7
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 4: Risk Assessment -->
+      <template if:true={isStep4}>
+        <div class="step-content">
+          <div class="approval-matrix">
+            <h3>47-Step Approval Process</h3>
+            <div class="approval-steps">
+              <div class="approval-step approved">✓ Legal Review</div>
+              <div class="approval-step approved">✓ Compliance Check</div>
+              <div class="approval-step approved">✓ Security Assessment</div>
+              <div class="approval-step approved">✓ Architectural Review</div>
+              <div class="approval-step approved">✓ ...43 more steps...</div>
+              <div class="approval-step approved">✓ Final Approval</div>
+            </div>
+            <p class="approval-note">
+              Status: <strong>APPROVED</strong> (it was always going to be
+              approved)
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 5: Enterprise Event Bus -->
+      <template if:true={isStep5}>
+        <div class="step-content">
+          <div class="event-bus-visual">
+            <h3>🚌 Enterprise Event Bus Journey</h3>
+            <div class="event-flow">
+              <div class="event-step">
+                <lightning-icon
+                  icon-name="utility:announcement"
+                  size="small"
+                ></lightning-icon>
+                <span>Platform Event Published</span>
+              </div>
+              <div class="event-arrow">→</div>
+              <div class="event-step">
+                <lightning-icon
+                  icon-name="utility:apex"
+                  size="small"
+                ></lightning-icon>
+                <span>Trigger Consumed Event</span>
+              </div>
+              <div class="event-arrow">→</div>
+              <div class="event-step">
+                <lightning-icon
+                  icon-name="utility:queue"
+                  size="small"
+                ></lightning-icon>
+                <span>Queueable Invoked</span>
+              </div>
+            </div>
+            <p class="event-note">
+              Your name and email just traveled through 3 architectural layers.
+              Fields saved: 2.
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 6: Additional Demographics -->
+      <template if:true={isStep6}>
+        <div class="step-content">
+          <div class="field-group">
+            <lightning-input
+              label="Phone Number"
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={formData.phone}
+              data-field="phone"
+              onchange={handleFieldChange}
+            >
+            </lightning-input>
+            <div class="field-meta">Platform Feature: Telephone input type</div>
+          </div>
+          <div class="info-box">
+            <p>
+              💡 We're collecting this for the marketing automation we haven't
+              built yet.
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 7: Preferences -->
+      <template if:true={isStep7}>
+        <div class="step-content">
+          <div class="preferences-box">
+            <h3>Communication Preferences</h3>
+            <lightning-input
+              type="checkbox"
+              label="Email me weekly updates"
+              checked
+            ></lightning-input>
+            <lightning-input
+              type="checkbox"
+              label="Send me product announcements"
+              checked
+            ></lightning-input>
+            <lightning-input
+              type="checkbox"
+              label="Include me in nurture campaigns"
+              checked
+            ></lightning-input>
+            <p class="pref-note">
+              Don't worry, we'll ignore these settings later.
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 8: Terms & Conditions -->
+      <template if:true={isStep8}>
+        <div class="step-content">
+          <div class="terms-preview">
+            <h3>Terms & Conditions</h3>
+            <div class="terms-scroll">
+              <p>
+                <strong>Section 1:</strong> You agree this form is
+                over-engineered.
+              </p>
+              <p><strong>Section 2:</strong> See Section 1.</p>
+              <p>
+                <strong>Section 3-47:</strong> More legal text you won't read...
+              </p>
+            </div>
+            <p class="terms-note">
+              📄 47 pages of enterprise-grade legal text (truncated for your
+              sanity)
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 9: Final Validation -->
+      <template if:true={isStep9}>
+        <div class="step-content">
+          <div class="validation-box">
+            <h3>Re-Validating Everything</h3>
+            <div class="validation-checks">
+              <div class="check-item">✓ Validation Rules (redundant)</div>
+              <div class="check-item">✓ Duplicate Rules (already did this)</div>
+              <div class="check-item">
+                ✓ Workflow Rules (deprecated but still here)
+              </div>
+              <div class="check-item">✓ Process Builder (should be a Flow)</div>
+              <div class="check-item">✓ Flow (should be a trigger)</div>
+              <div class="check-item">✓ Trigger (finally, the right tool)</div>
+            </div>
+            <p class="validation-note">All validations passed. Again.</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 10: Architectural Review -->
+      <template if:true={isStep10}>
+        <div class="step-content">
+          <div class="arch-review">
+            <h3>Architectural Committee Review</h3>
+            <div class="review-status">
+              <template if:true={archReviewSpinning}>
+                <lightning-spinner
+                  size="medium"
+                  alternative-text="Awaiting approval"
+                ></lightning-spinner>
+              </template>
+              <p class="review-text">Status: Pending...</p>
+              <template if:true={archReviewStillPending}>
+                <p class="review-text">Status: Still Pending...</p>
+              </template>
+              <template if:true={archReviewApproved}>
+                <p class="review-text">
+                  Status: <strong class="approved">APPROVED!</strong>
+                </p>
+              </template>
+            </div>
+            <p class="review-note">(It was instant, we just made you wait)</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- STEP 11: The Reveal -->
+      <template if:true={isStep11}>
+        <div class="step-content">
+          <div class="debug-log-container">
+            <h3>🐛 Mock Debug Log</h3>
+            <div class="debug-log">
+              <template for:each={debugLog} for:item="log">
+                <div key={log} class="log-entry">{log}</div>
+              </template>
+            </div>
+            <div class="total-features">
+              <strong
+                >Total Platform Features Invoked:
+                {platformFeaturesInvoked}</strong
+              >
+            </div>
+          </div>
+
+          <div class="final-message">
+            <h3>🎭 The Reveal</h3>
+            <p>
+              If this made you laugh and slightly concerned about my priorities,
+              imagine what I could build for your org.
+            </p>
+            <p>All of this... to capture {fieldsCaptured} fields.</p>
+          </div>
+        </div>
+      </template>
+
+      <!-- Navigation Buttons -->
+      <div slot="footer" class="button-container">
+        <lightning-button
+          label="Previous"
+          icon-name="utility:back"
+          onclick={handlePrevious}
+          disabled={isFirstStep}
+          class="nav-button"
+        >
+        </lightning-button>
+
+        <lightning-button
+          variant="brand"
+          label={nextButtonLabel}
+          icon-name="utility:forward"
+          icon-position="right"
+          onclick={handleNext}
+          disabled={isNextDisabled}
+          class="nav-button next-button"
+        >
+        </lightning-button>
+      </div>
+
+      <!-- Loading Overlay -->
+      <template if:true={isSubmitting}>
+        <div class="loading-overlay">
+          <div class="loading-content">
+            <lightning-spinner
+              alternative-text="Processing..."
+              size="large"
+            ></lightning-spinner>
+            <h3>Processing Lead Creation...</h3>
+            <p class="loading-message">{loadingMessage}</p>
+          </div>
+        </div>
+      </template>
+    </lightning-card>
+
+    <!-- Terms Modal (custom — SLDS modal classes don't penetrate shadow DOM in LWR) -->
+    <template if:true={showTermsModal}>
+      <div
+        class="bmc-modal-backdrop"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 99998;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        "
+      >
+        <div
+          class="bmc-modal"
+          style="
+            background: #fff;
+            border-radius: 8px;
+            max-width: 540px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+          "
+        >
+          <header class="bmc-modal__header">
+            <h2 class="bmc-modal__title">Terms &amp; Conditions (47 Pages)</h2>
+          </header>
+          <div class="bmc-modal__content">
+            <p>
+              <strong>Section 1:</strong> You agree this form is
+              over-engineered.
+            </p>
+            <p><strong>Section 2:</strong> See Section 1.</p>
+            <p>
+              <strong>Sections 3-47:</strong> Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit...
+            </p>
+            <p class="terms-fine-print">(No one reads these anyway)</p>
+          </div>
+          <footer class="bmc-modal__footer">
+            <lightning-button
+              label="I Accept (pending architectural review)"
+              variant="brand"
+              onclick={closeTermsModal}
+            >
+            </lightning-button>
+          </footer>
+        </div>
+      </div>
+    </template>
+
+    <!-- Drone Deployment Modal -->
+    <template if:true={showDroneModal}>
+      <div
+        class="bmc-modal-backdrop"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 99998;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        "
+      >
+        <div
+          class="bmc-modal"
+          style="
+            background: #fff;
+            border-radius: 8px;
+            max-width: 540px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+          "
+        >
+          <header class="bmc-modal__header">
+            <h2 class="bmc-modal__title">
+              🚁 Agentforce Drone Army Deployment
+            </h2>
+            <lightning-button-icon
+              icon-name="utility:close"
+              variant="bare"
+              onclick={closeDroneModal}
+              alternative-text="Close"
+            >
+            </lightning-button-icon>
+          </header>
+          <div class="bmc-modal__content">
+            <template if:true={isDroneDeploying}>
+              <div class="drone-stage">
+                <p class="deploy-text">
+                  Deploying AgentforceDroneArmy_v47.cls to Production...
+                </p>
+                <lightning-spinner
+                  size="medium"
+                  alternative-text="Deploying"
+                ></lightning-spinner>
+              </div>
+            </template>
+
+            <template if:true={isDroneFailed}>
+              <div class="drone-stage failure">
+                <lightning-icon
+                  icon-name="utility:error"
+                  variant="error"
+                  size="large"
+                ></lightning-icon>
+                <p class="error-text"><strong>DEPLOYMENT FAILED</strong></p>
+                <p>Code coverage: 74%. You need 75%.</p>
+                <template if:true={isDroneAssertion}>
+                  <p class="error-detail">
+                    1 test failed: testDroneSwarmInitialization
+                  </p>
+                  <p class="error-detail">
+                    System.AssertException: Expected: world domination, Actual:
+                    null
+                  </p>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Duplicate Check Modal -->
+    <template if:true={showDuplicateModal}>
+      <div
+        class="bmc-modal-backdrop"
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 99998;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        "
+      >
+        <div
+          class="bmc-modal"
+          style="
+            background: #fff;
+            border-radius: 8px;
+            max-width: 540px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+          "
+        >
+          <header class="bmc-modal__header">
+            <h2 class="bmc-modal__title">🔍 Duplicate Check Results</h2>
+            <lightning-button-icon
+              icon-name="utility:close"
+              variant="bare"
+              onclick={closeDuplicateModal}
+              alternative-text="Close"
+            >
+            </lightning-button-icon>
+          </header>
+          <div class="bmc-modal__content">
+            <div class="duplicate-result-box">
+              <p class="result-text">{duplicateCheckResult}</p>
+              <template if:true={hasDuplicates}>
+                <p class="duplicate-list-heading">
+                  <strong>Potential matches:</strong>
+                </p>
+                <ul class="duplicate-list">
+                  <template for:each={duplicateLeads} for:item="dup">
+                    <li key={dup.Id}>
+                      {dup.FirstName} {dup.LastName} ({dup.Email})
+                    </li>
+                  </template>
+                </ul>
+                <p class="duplicate-note">
+                  You may proceed anyway (we're not the data police).
+                </p>
+              </template>
+              <p class="result-note">
+                Platform Feature Invoked: SOQL Query + Imperative Apex Call
+              </p>
+            </div>
+          </div>
+          <footer class="bmc-modal__footer">
+            <lightning-button
+              label="Close"
+              variant="brand"
+              onclick={closeDuplicateModal}
+            >
+            </lightning-button>
+          </footer>
+        </div>
+      </div>
+    </template>
+
+    <!-- Snarky Alert (custom inline banner — ShowToastEvent doesn't render on LWR sites) -->
+    <template if:true={snarkyAlert}>
+      <div
+        class={snarkyAlertClass}
+        role="alert"
+        style="
+          position: fixed;
+          top: 80px;
+          right: 20px;
+          z-index: 99999;
+          max-width: 360px;
+          padding: 1rem 1.25rem;
+          color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+        "
+      >
+        <div class="snarky-alert__body" style="flex: 1">
+          <div
+            class="snarky-alert__title"
+            style="font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem"
+          >
+            {snarkyAlert.title}
+          </div>
+          <div
+            class="snarky-alert__message"
+            style="font-size: 0.875rem; line-height: 1.4"
+          >
+            {snarkyAlert.message}
+          </div>
+        </div>
+        <lightning-button-icon
+          icon-name="utility:close"
+          variant="bare-inverse"
+          size="small"
+          alternative-text="Dismiss"
+          onclick={closeSnarky}
+          class="snarky-alert__close"
+        >
+        </lightning-button-icon>
+      </div>
+    </template>
+
+    <!-- Confetti Overlay -->
+    <template if:true={showConfetti}>
+      <div class="confetti-container">
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+      </div>
+    </template>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      <p>
+        💡
+        <em
+          >This form demonstrates what happens when developers have too much
+          time and too many platform features.</em
+        >
+      </p>
+    </div>
+  </div>
 </template>

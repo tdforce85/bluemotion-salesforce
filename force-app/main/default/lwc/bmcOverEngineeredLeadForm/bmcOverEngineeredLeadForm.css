@@ -256,38 +256,42 @@
   font-weight: var(--slds-g-font-weight-6, 600);
 }
 
-/* Platform Features Counter Badge */
+/* Card actions row — counter pill + step badge inline */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-g-spacing-3, 0.75rem);
+}
+
+/* Platform Features Counter Badge — inline in card actions */
 .stats-badge {
-  position: fixed;
-  top: 20px;
-  right: 20px;
   background: linear-gradient(
     135deg,
     var(--bmc-brand-grad-start) 0%,
     var(--bmc-brand-grad-end) 100%
   );
   color: var(--slds-g-color-on-accent-1, #ffffff);
-  padding: var(--slds-g-spacing-3, 0.75rem) 1.25rem;
+  padding: var(--slds-g-spacing-2, 0.5rem) var(--slds-g-spacing-4, 1rem);
   border-radius: 50px;
-  box-shadow: 0 4px 15px var(--bmc-brand-shadow);
-  display: flex;
+  box-shadow: 0 2px 8px var(--bmc-brand-shadow);
+  display: inline-flex;
   align-items: center;
   gap: var(--slds-g-spacing-2, 0.5rem);
-  z-index: 1000;
   animation: pulse 2s infinite;
   font-weight: var(--slds-g-font-weight-6, 600);
   font-size: var(--slds-g-font-scale-1, 0.875rem);
+  white-space: nowrap;
 }
 
 @keyframes pulse {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 4px 15px var(--bmc-brand-shadow);
+    box-shadow: 0 2px 8px var(--bmc-brand-shadow);
   }
   50% {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px var(--bmc-brand-shadow-strong);
+    transform: scale(1.03);
+    box-shadow: 0 3px 12px var(--bmc-brand-shadow-strong);
   }
 }
 
@@ -1065,12 +1069,6 @@
 @media (max-width: 768px) {
   .over-engineered-container {
     padding: var(--slds-g-spacing-2, 0.5rem);
-  }
-
-  .stats-badge {
-    position: static;
-    margin-bottom: var(--slds-g-spacing-4, 1rem);
-    justify-content: center;
   }
 
   .button-container {
