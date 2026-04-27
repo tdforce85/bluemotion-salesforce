@@ -752,9 +752,13 @@ export default class BmcOverEngineeredLeadForm extends LightningElement {
 
       if (result && result.eventPublished) {
         this.incrementPlatformFeatures("Platform Event publication");
-        this.addToDebugLog("[EVENT BUS] LeadSubmission__e published — trigger + queueable inbound");
+        this.addToDebugLog(
+          "[EVENT BUS] LeadSubmission__e published — trigger + queueable inbound"
+        );
       } else if (result && !result.eventPublished) {
-        this.addToDebugLog("[EVENT BUS] LeadSubmission__e publish failed — ErrorLogger has the receipts");
+        this.addToDebugLog(
+          "[EVENT BUS] LeadSubmission__e publish failed — ErrorLogger has the receipts"
+        );
         this.showToast(
           "Platform Event Hiccup",
           "Lead saved. Platform Event hiccupped. The Queueable is orphaned. Architecture points: 7/10.",
@@ -797,7 +801,7 @@ export default class BmcOverEngineeredLeadForm extends LightningElement {
   async cycleLoadingMessages() {
     // Sequential pacing is intentional — each line is meant to display long
     // enough to read before swapping. Parallelizing would defeat the joke.
-    for (let msg of this.loadingMessages) {
+    for (const msg of this.loadingMessages) {
       this.loadingMessage = msg;
       // eslint-disable-next-line no-await-in-loop, @lwc/lwc/no-async-operation
       await new Promise((resolve) => setTimeout(resolve, 800));
