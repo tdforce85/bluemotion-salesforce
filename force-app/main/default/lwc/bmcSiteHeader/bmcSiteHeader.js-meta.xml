@@ -14,32 +14,20 @@
             <property
         name="homeUrl"
         type="String"
-        label="Home URL"
+        label="Home URL (Logo Link)"
         default="/"
       />
             <property
-        name="portfolioUrl"
+        name="overEngineeredLeadFormUrl"
         type="String"
-        label="Portfolio URL"
-        default="/portfolio"
+        label="Over Engineered Lead Form URL"
+        default="/"
       />
             <property
-        name="contactUrl"
+        name="errorHandlingDashboardUrl"
         type="String"
-        label="Contact URL"
-        default="/contact"
-      />
-            <property
-        name="underTheHoodUrl"
-        type="String"
-        label="Under the Hood URL"
-        default="/under-the-hood"
-      />
-            <property
-        name="agentforceDemoUrl"
-        type="String"
-        label="Agentforce Demo URL"
-        default="/agentforce-demo"
+        label="Error Handling Dashboard URL"
+        default="/"
       />
             <property
         name="externalLinkUrl"

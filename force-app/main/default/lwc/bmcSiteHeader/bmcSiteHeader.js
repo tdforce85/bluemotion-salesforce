@@ -2,10 +2,8 @@ import { LightningElement, api } from "lwc";
 
 export default class BmcSiteHeader extends LightningElement {
   @api homeUrl = "/";
-  @api portfolioUrl = "/portfolio";
-  @api contactUrl = "/contact";
-  @api underTheHoodUrl = "/under-the-hood";
-  @api agentforceDemoUrl = "/agentforce-demo";
+  @api overEngineeredLeadFormUrl = "/";
+  @api errorHandlingDashboardUrl = "/";
   @api externalLinkUrl = "https://tonydegregorio.com";
   @api externalLinkLabel = "tonydegregorio.com";
 

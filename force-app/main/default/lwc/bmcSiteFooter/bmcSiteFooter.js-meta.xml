@@ -33,7 +33,7 @@
         name="tagline"
         type="String"
         label="Tagline"
-        default="Built on Salesforce Experience Cloud LWR. Yes, really."
+        default="Built on Salesforce Experience Cloud LWR."
       />
         </targetConfig>
     </targetConfigs>
