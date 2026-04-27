@@ -8,10 +8,10 @@
  * The subscriber trigger runs as the Automated Process user, which has full system
  * context and is unaffected.
  *
- * Trade-off: writes are async (small commit-and-deliver delay before the row exists).
- * Acceptable for error logging; PublishAfterCommit on Error_Event__e also gives us
- * the desirable property that errors logged in a transaction that rolls back are
- * never persisted.
+ * Trade-off: writes are async (small deliver delay before the row exists).
+ * Error_Event__e uses PublishImmediately — we MUST capture error logs even when
+ * the calling transaction rolls back (e.g., AuraHandledException from a
+ * controller after a DML failure). PublishAfterCommit would lose those.
  *
  * Usage:
  *   ErrorLogger.create()
