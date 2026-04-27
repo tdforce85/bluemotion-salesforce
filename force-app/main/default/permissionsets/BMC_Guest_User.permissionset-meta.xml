@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>BMC Experience Cloud guest user permissions. Grants Create on platform events for guest-context publishing. Error_Log__c direct access withheld — ErrorLogController is the data gateway.</description>
+    <description
+  >BMC Experience Cloud guest user permissions. Grants Create on platform events for guest-context publishing. Error_Log__c direct access withheld — ErrorLogController is the data gateway.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>BMC Guest User</label>
     <objectPermissions>
@@ -9,7 +10,8 @@
         <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>LeadSubmission__e</object>
+        <object>Error_Event__e</object>
+        <viewAllFields>false</viewAllFields>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -18,7 +20,8 @@
         <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>Error_Event__e</object>
+        <object>LeadSubmission__e</object>
+        <viewAllFields>false</viewAllFields>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
 </PermissionSet>

@@ -1,12 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Content_Key__c</fullName>
     <caseSensitive>false</caseSensitive>
-    <description>Unique lookup key for programmatic access (e.g., home_hero_headline)</description>
+    <description
+  >Unique lookup key for programmatic access (e.g., home_hero_headline)</description>
     <externalId>true</externalId>
     <label>Content Key</label>
     <length>100</length>
     <required>false</required>
+    <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>true</unique>
 </CustomField>
