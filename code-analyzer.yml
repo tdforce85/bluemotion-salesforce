@@ -1,0 +1,7 @@
+engines:
+  flow:
+    python_command: /opt/homebrew/opt/python@3.12/bin/python3.12
+rules:
+  eslint:
+    "@lwc/lwc-platform/no-inline-disable":
+      tags: []
