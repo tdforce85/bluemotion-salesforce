@@ -3,17 +3,23 @@ import getErrorSummary from "@salesforce/apex/ErrorLogController.getErrorSummary
 import getRecentErrors from "@salesforce/apex/ErrorLogController.getRecentErrors";
 import getErrorsBySource from "@salesforce/apex/ErrorLogController.getErrorsBySource";
 
-const SEVERITY_ORDER  = ["Critical", "High", "Medium", "Low", "Info"];
-const SEVERITY_SLUG   = { Critical: "critical", High: "high", Medium: "medium", Low: "low", Info: "info" };
+const SEVERITY_ORDER = ["Critical", "High", "Medium", "Low", "Info"];
+const SEVERITY_SLUG = {
+  Critical: "critical",
+  High: "high",
+  Medium: "medium",
+  Low: "low",
+  Info: "info"
+};
 const POLL_INTERVAL_MS = 30000;
 
 export default class BmcErrorDashboard extends LightningElement {
-  @track isLoading      = false;
-  @track lastRefreshed  = "";
-  @track severityCards  = [];
-  @track recentErrors   = [];
+  @track isLoading = false;
+  @track lastRefreshed = "";
+  @track severityCards = [];
+  @track recentErrors = [];
   @track sourceChartData = [];
-  @track hasSourceData  = false;
+  @track hasSourceData = false;
   @track hasRecentErrors = false;
 
   _pollInterval = null;
@@ -53,10 +59,12 @@ export default class BmcErrorDashboard extends LightningElement {
 
   processSummary(data) {
     const countMap = {};
-    (data || []).forEach((s) => { countMap[s.severity] = s.count; });
+    (data || []).forEach((s) => {
+      countMap[s.severity] = s.count;
+    });
     this.severityCards = SEVERITY_ORDER.map((sev) => ({
-      severity:  sev,
-      count:     countMap[sev] || 0,
+      severity: sev,
+      count: countMap[sev] || 0,
       cardClass: `severity-card severity-card--${SEVERITY_SLUG[sev]}`
     }));
   }
@@ -65,10 +73,12 @@ export default class BmcErrorDashboard extends LightningElement {
     this.hasRecentErrors = data && data.length > 0;
     this.recentErrors = (data || []).map((err) => ({
       ...err,
-      formattedTime:      this.formatTime(err.Occurred_At__c),
-      rowClass:           `error-row error-row--${SEVERITY_SLUG[err.Severity__c] || "info"}`,
+      formattedTime: this.formatTime(err.Occurred_At__c),
+      rowClass: `error-row error-row--${SEVERITY_SLUG[err.Severity__c] || "info"}`,
       severityBadgeClass: `severity-badge severity-badge--${SEVERITY_SLUG[err.Severity__c] || "info"}`,
-      locationLabel:      [err.Class_Name__c, err.Method_Name__c].filter(Boolean).join(".")
+      locationLabel: [err.Class_Name__c, err.Method_Name__c]
+        .filter(Boolean)
+        .join(".")
     }));
   }
 

@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>BMC_Email_Or_Phone_Required</fullName>
     <active>true</active>
-    <description>Requires at least one of Email or Phone on Leads submitted via the Over-Engineered Web Form. Backstop only — client-side validation prevents normal hits.</description>
+    <description
+  >Requires at least one of Email or Phone on Leads submitted via the Over-Engineered Web Form. Backstop only — client-side validation prevents normal hits.</description>
     <errorConditionFormula>AND(
-        ISPICKVAL(LeadSource, 'Over-Engineered Web Form'),
+        ISPICKVAL(LeadSource, &apos;Over-Engineered Web Form&apos;),
         ISBLANK(Email),
         ISBLANK(Phone)
     )</errorConditionFormula>
     <errorDisplayField>Email</errorDisplayField>
-    <errorMessage>Despite invoking all those platform features, you still didn&apos;t provide an email or phone. The architectural committee is disappointed.</errorMessage>
+    <errorMessage
+  >Despite invoking all those platform features, you still didn&apos;t provide an email or phone. The architectural committee is disappointed.</errorMessage>
 </ValidationRule>

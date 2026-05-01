@@ -1,85 +1,97 @@
 <template>
-    <div class="dashboard-container">
-
-        <div class="dashboard-header">
-            <h1 class="header-title">Under the Hood</h1>
-            <p class="header-subtitle">Most sites hide their errors. We put ours on display.</p>
-            <p class="header-description">
-                This dashboard is powered by a unified error handling framework — every Apex trigger,
-                Flow fault path, Platform Event, and Queueable in this org routes through a single
-                ErrorLogger service. OWD is Private. You're seeing this via a
-                <code>without sharing</code> controller acting as an explicit data gateway.
-            </p>
-            <div class="poll-indicator">
-                <span>&#8635; Auto-refreshes every 30s</span>
-                <template if:true={isLoading}>
-                    <lightning-spinner size="x-small" alternative-text="Refreshing..."></lightning-spinner>
-                </template>
-                <template if:false={isLoading}>
-                    <span class="last-refreshed">{lastRefreshed}</span>
-                </template>
-            </div>
-        </div>
-
-        <!-- Severity Summary Cards -->
-        <div class="section">
-            <h2 class="section-title">Error Summary by Severity</h2>
-            <div class="severity-grid">
-                <template for:each={severityCards} for:item="card">
-                    <div key={card.severity} class={card.cardClass}>
-                        <div class="severity-count">{card.count}</div>
-                        <div class="severity-label">{card.severity}</div>
-                    </div>
-                </template>
-            </div>
-        </div>
-
-        <!-- Errors by Source Bar Chart -->
-        <div class="section">
-            <h2 class="section-title">Errors by Source</h2>
-            <template if:true={hasSourceData}>
-                <div class="bar-chart">
-                    <template for:each={sourceChartData} for:item="bar">
-                        <div key={bar.source} class="bar-row">
-                            <span class="bar-label">{bar.source}</span>
-                            <div class="bar-track">
-                                <div class="bar-fill" style={bar.barStyle}></div>
-                            </div>
-                            <span class="bar-count">{bar.count}</span>
-                        </div>
-                    </template>
-                </div>
-            </template>
-            <template if:false={hasSourceData}>
-                <p class="empty-state">No errors logged yet. Either the code is perfect or nothing has run. Probably nothing has run.</p>
-            </template>
-        </div>
-
-        <!-- Recent Errors Feed -->
-        <div class="section">
-            <h2 class="section-title">Recent Errors <span class="section-subtitle">(last 20)</span></h2>
-            <template if:true={hasRecentErrors}>
-                <div class="error-feed">
-                    <template for:each={recentErrors} for:item="err">
-                        <div key={err.Id} class={err.rowClass}>
-                            <div class="err-meta">
-                                <span class={err.severityBadgeClass}>{err.Severity__c}</span>
-                                <span class="err-pill">{err.Source__c}</span>
-                                <span class="err-pill">{err.Category__c}</span>
-                                <span class="err-time">{err.formattedTime}</span>
-                            </div>
-                            <div class="err-message">{err.Error_Message__c}</div>
-                            <template if:true={err.locationLabel}>
-                                <div class="err-location">{err.locationLabel}</div>
-                            </template>
-                        </div>
-                    </template>
-                </div>
-            </template>
-            <template if:false={hasRecentErrors}>
-                <p class="empty-state">No errors to display. Try triggering a validation rule. We dare you.</p>
-            </template>
-        </div>
-
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="header-title">Under the Hood</h1>
+      <p class="header-subtitle">
+        Most sites hide their errors. We put ours on display.
+      </p>
+      <p class="header-description">
+        This dashboard is powered by a unified error handling framework — every
+        Apex trigger, Flow fault path, Platform Event, and Queueable in this org
+        routes through a single ErrorLogger service. OWD is Private. You're
+        seeing this via a
+        <code>without sharing</code> controller acting as an explicit data
+        gateway.
+      </p>
+      <div class="poll-indicator">
+        <span>&#8635; Auto-refreshes every 30s</span>
+        <template if:true={isLoading}>
+          <lightning-spinner
+            size="x-small"
+            alternative-text="Refreshing..."
+          ></lightning-spinner>
+        </template>
+        <template if:false={isLoading}>
+          <span class="last-refreshed">{lastRefreshed}</span>
+        </template>
+      </div>
     </div>
+
+    <!-- Severity Summary Cards -->
+    <div class="section">
+      <h2 class="section-title">Error Summary by Severity</h2>
+      <div class="severity-grid">
+        <template for:each={severityCards} for:item="card">
+          <div key={card.severity} class={card.cardClass}>
+            <div class="severity-count">{card.count}</div>
+            <div class="severity-label">{card.severity}</div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Errors by Source Bar Chart -->
+    <div class="section">
+      <h2 class="section-title">Errors by Source</h2>
+      <template if:true={hasSourceData}>
+        <div class="bar-chart">
+          <template for:each={sourceChartData} for:item="bar">
+            <div key={bar.source} class="bar-row">
+              <span class="bar-label">{bar.source}</span>
+              <div class="bar-track">
+                <div class="bar-fill" style={bar.barStyle}></div>
+              </div>
+              <span class="bar-count">{bar.count}</span>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template if:false={hasSourceData}>
+        <p class="empty-state">
+          No errors logged yet. Either the code is perfect or nothing has run.
+          Probably nothing has run.
+        </p>
+      </template>
+    </div>
+
+    <!-- Recent Errors Feed -->
+    <div class="section">
+      <h2 class="section-title">
+        Recent Errors <span class="section-subtitle">(last 20)</span>
+      </h2>
+      <template if:true={hasRecentErrors}>
+        <div class="error-feed">
+          <template for:each={recentErrors} for:item="err">
+            <div key={err.Id} class={err.rowClass}>
+              <div class="err-meta">
+                <span class={err.severityBadgeClass}>{err.Severity__c}</span>
+                <span class="err-pill">{err.Source__c}</span>
+                <span class="err-pill">{err.Category__c}</span>
+                <span class="err-time">{err.formattedTime}</span>
+              </div>
+              <div class="err-message">{err.Error_Message__c}</div>
+              <template if:true={err.locationLabel}>
+                <div class="err-location">{err.locationLabel}</div>
+              </template>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template if:false={hasRecentErrors}>
+        <p class="empty-state">
+          No errors to display. Try triggering a validation rule. We dare you.
+        </p>
+      </template>
+    </div>
+  </div>
 </template>

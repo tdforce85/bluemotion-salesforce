@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description
-  >BMC internal admin access. Grants tab visibility, full CRUD, and FLS on the project's custom objects so the running admin can navigate and inspect data captured by the public site.</description>
-    <hasActivationRequired>false</hasActivationRequired>
-    <label>BMC Admin</label>
+  >BMC internal admin access. Grants tab visibility, full CRUD, and FLS on the project&apos;s custom objects so the running admin can navigate and inspect data captured by the public site.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case_Study__c.Approach__c</field>
@@ -159,16 +157,8 @@
         <field>Stack_Result__c.Recommended_Stack__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Service__c</object>
-        <viewAllFields>true</viewAllFields>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>BMC Admin</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -185,7 +175,17 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Stack_Result__c</object>
+        <object>Error_Log__c</object>
+        <viewAllFields>true</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Service__c</object>
         <viewAllFields>true</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -205,20 +205,20 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Error_Log__c</object>
+        <object>Stack_Result__c</object>
         <viewAllFields>true</viewAllFields>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <tabSettings>
-        <tab>Service__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
     <tabSettings>
         <tab>Case_Study__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Stack_Result__c</tab>
+        <tab>Error_Log__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Service__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
@@ -226,7 +226,7 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Error_Log__c</tab>
+        <tab>Stack_Result__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
 </PermissionSet>
