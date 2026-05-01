@@ -49,3 +49,11 @@ $RECYCLE.BIN/
 
 # Claude Code session state
 .claude/
+
+# VC demo — internal Vanguard Charitable pitch, fully decoupled from portfolio site.
+# Kept out of git because this repo is public and the demo lifts VC brand assets.
+# Removing this stanza is step 1 of the purge procedure documented in the project plan.
+force-app/main/default/lwc/vc*/
+force-app/main/default/staticresources/vc_demo_assets*
+force-app/main/default/digitalExperiences/site/vc_demo/
+force-app/main/default/permissionsets/VC_*.permissionset-meta.xml
