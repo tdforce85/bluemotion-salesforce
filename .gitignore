@@ -55,5 +55,5 @@ $RECYCLE.BIN/
 # Removing this stanza is step 1 of the purge procedure documented in the project plan.
 force-app/main/default/lwc/vc*/
 force-app/main/default/staticresources/vc_demo_assets*
-force-app/main/default/digitalExperiences/site/vc_demo/
+force-app/main/default/digitalExperiences/site/VC_Demo*/
 force-app/main/default/permissionsets/VC_*.permissionset-meta.xml
